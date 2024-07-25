@@ -1,0 +1,2 @@
+#!/bin/bash
+# "shell": { "all": true, "execute": true, "scope": [{ "name": "trans", "cmd": "trans", "args": true }] }

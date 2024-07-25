@@ -1,0 +1,4 @@
+[submodule "HoYo.Gacha"]
+	path = HoYo.Gacha
+	url = git@github.com:lgou2w/HoYo.Gacha.git
+	branch = main
