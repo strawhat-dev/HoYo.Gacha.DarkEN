@@ -1,2 +1,7 @@
 #!/bin/bash
 # "shell": { "all": true, "execute": true, "scope": [{ "name": "trans", "cmd": "trans", "args": true }] }
+dir="$(dirname "$(realpath "${BASH_SOURCE[0]:-$0}")")" && cd "${dir}"
+app_tsx_path="${dir}/HoYo.Gacha/src/App.tsx"
+mv -fv "$app_tsx_path" "$dir" && cp -fv "${dir}/patched/App.tsx" "$app_tsx_path"
+{ tail -F /dev/null --pid=$$ && nohup mv -f "${dir}/App.tsx" "$app_tsx_path" & } &> /dev/null &
+sleep 10 && echo hi
