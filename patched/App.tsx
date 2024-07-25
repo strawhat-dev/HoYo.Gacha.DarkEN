@@ -1,3 +1,6 @@
+/* eslint-disable semi */
+/* eslint-disable space-before-function-paren */
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 // @ts-nocheck
 import React from 'react';
 import { Command } from '@tauri-apps/api/shell';
@@ -20,17 +23,25 @@ const walk = (root: Node) => {
 const translate = async (text: string) => {
   if (!HAN_REGEX.test(text = text.replaceAll('：', ': '))) return text;
   const { stdout, code } = await new Command('trans', ['-b', 'zh:en', text]).execute();
-  return code ? text : stdout.trim();
-};
-
-const transform = async () => {
-  for (const node of walk(document.body)) {
-    const textContent = await translate(node.textContent!);
-    Object.assign(node, { textContent });
-  }
+  return code === 0 ? stdout.trim() : text;
 };
 
 export default function App() {
+  const mapping = React.useRef(new Map());
+
+  const transform = async () => {
+    for (const node of walk(document.body)) {
+      if (!node.textContent) continue;
+      if (!mapping.current.has(node.textContent)) {
+        const result = await translate(node.textContent);
+        mapping.current.set(node.textContent, result);
+      }
+
+      const textContent = mapping.current.get(node.textContent);
+      Object.assign(node, { textContent });
+    }
+  };
+
   // HACK: Disable context menu in production
   React.useEffect(() => {
     const observer = new MutationObserver(transform);
