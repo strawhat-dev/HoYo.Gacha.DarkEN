@@ -5,7 +5,7 @@ dir="$(dirname "$(realpath "${BASH_SOURCE[0]:-$0}")")"
 tauri_config_path="${dir}/HoYo.Gacha/src-tauri/tauri.conf.json"
 app_tsx_path="${dir}/HoYo.Gacha/src/App.tsx"
 
-[[ $1 == --restore ]] && sleep 4 && {
+[[ $1 == --restore ]] && sleep 3 && {
   mv -f "${dir}/App.tsx" "$app_tsx_path"
   mv -f "${dir}/tauri.conf.json" "$tauri_config_path"
   exit
@@ -15,5 +15,5 @@ mv -f "$app_tsx_path" "$dir"
 cp -f "$tauri_config_path" "$dir"
 cp -f "${dir}/patched/App.tsx" "$app_tsx_path"
 sd -F '"shell": { "all": true }' "$tauri_shell_config" "$tauri_config_path"
-{ tail -F /dev/null --pid=$$ && nohup "${dir}/run" --restore & } &> /dev/null &
+{ tail -F /dev/null --pid=$$ && nohup "${dir}/pnp" --restore & } &> /dev/null &
 cd "${dir}/HoYo.Gacha" || exit 1 ; exec pnpm.exe "$@"
