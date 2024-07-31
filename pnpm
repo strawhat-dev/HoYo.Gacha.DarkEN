@@ -1,6 +1,6 @@
 #!/bin/bash
 
-__dirname="$(dirname "$(realpath "${BASH_SOURCE[0]:-$0}")")"
+__dirname="$(dirname "$(realpath "${BASH_SOURCE[0]:-$0}")")" && cd "$__dirname" || exit 1
 
 isWSL() { [[ -n $IS_WSL || -n $WSL_DISTRO_NAME ]] && (( $1 + WSL2_GUI_APPS_ENABLED != 2 )) ; }
 
@@ -10,7 +10,7 @@ tauri_shell_config='"shell": { "all": true, "execute": true, "scope": [{ "name":
 darkreader_cdn='<script defer src="https://cdn.jsdelivr.net/npm/darkreader@latest"></script>'
 [[ -f $index_html ]] || git submodule update --init --remote --force || exit 1
 
-cp -rf "${__dirname}/patched/src" "${__dirname}/HoYo.Gacha"
+/bin/cp -rf "${__dirname}/patched/src" "${__dirname}/HoYo.Gacha"
 sed -i "/locale/d" "${__dirname}/HoYo.Gacha/src/utilities/dayjs.ts"
 sed -i "s/\"shell\": { \"all\": true }/${tauri_shell_config}/" "$tauri_conf"
 sed -i "6i \ \ \ \ ${darkreader_cdn}" "$index_html"

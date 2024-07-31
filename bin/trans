@@ -1,0 +1,10 @@
+#!/bin/sh
+
+TRANS_AWK="${HOME}/.cache/awk/trans.awk"
+
+[ -f "$TRANS_AWK" ] || {
+  /bin/mkdir -p "$(dirname "$TRANS_AWK")"
+  curl -fsSL https://git.io/translate > "$TRANS_AWK"
+}
+
+exec gawk -f "$TRANS_AWK" - "$@"
